@@ -6,7 +6,8 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-@Feature("Работа с новой Issue")
+
+@Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
 public class GithubIssuesStepsTests {
     private WebSteps steps = new WebSteps();
@@ -25,8 +26,8 @@ public class GithubIssuesStepsTests {
         steps.fillOutFormAndCreateAnIssue(TestData.getTITLE(), TestData.getDESCRIPTION());
 
         steps.writeAnIssueId();
-        steps.assignAnIssueToYourself();
-        steps.addLabelForIssue();
+        steps.assignAnIssueToYourself(TestData.getOWNER());
+        steps.addLabelForIssue(TestData.getLABEL());
         steps.closeBrowser();
 
         apiSteps.checkCreatedIssue(TestData.getOWNER(), TestData.getREPOSITORY(),

@@ -1,9 +1,9 @@
 package qa.guru.allure;
 
 public class PrivateData {
-    private static final String LOGIN = "test";
-    private static final String PASSWORD = "test";
-    private static final String TOKEN = "test";
+    private static final String LOGIN = "";
+    private static final String PASSWORD = "";
+    private static final String TOKEN = "";
 
     public static String getLOGIN() {
         return LOGIN;

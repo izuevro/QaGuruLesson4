@@ -7,8 +7,8 @@ import org.openqa.selenium.WebElement;
 import java.util.List;
 import java.util.Optional;
 
-public class NamedBy extends By {
 
+public class NamedBy extends By {
     private final By origin;
     private String name;
 

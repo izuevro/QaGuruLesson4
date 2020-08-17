@@ -8,10 +8,10 @@ import io.qameta.allure.restassured.AllureRestAssured;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-@Feature("Работа с новой Issue")
+
+@Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
 public class ApiSteps {
-
     @Step("Проверка issue через API")
     public void checkCreatedIssue(String owner, String repository,
                                   String issueId, String token) {
@@ -20,7 +20,7 @@ public class ApiSteps {
                 .baseUri("https://api.github.com")
                 .header("Authorization", token)
                 .when()
-                .get("/repos/" + owner + "/" + repository + "/issues/" + issueId)
+                .get(String.format("/repos/%s/%s/issues/%s", owner, repository, issueId))
                 .then()
                 .statusCode(200)
                 .body("number", equalTo(Integer.parseInt(issueId)))

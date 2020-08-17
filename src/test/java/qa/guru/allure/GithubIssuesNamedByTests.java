@@ -17,10 +17,10 @@ import static io.qameta.allure.Allure.parameter;
 import static qa.guru.allure.NamedBy.css;
 import static qa.guru.allure.NamedBy.named;
 
-@Feature("Работа с новой Issue")
+
+@Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
 public class GithubIssuesNamedByTests {
-
     @BeforeEach
     public void initSelenideListener() {
         SelenideLogger.addListener("allure", new AllureSelenide()
@@ -45,18 +45,19 @@ public class GithubIssuesNamedByTests {
         $(css("#password").as("Заполнить поле Password")).val(PrivateData.getPASSWORD()).pressEnter();
 
         $(named(by("title", TestData.getREPOSITORY()))
-                .as("Перейти в репозиторий " + TestData.getREPOSITORY())).click();
-        $(css("[data-tab-item=issues-tab]").as("Перейти во вкладку Issues")).click();
-        $(css(".d-md-block").as("Нажать кнопку New issue")).click();
+                .as(String.format("Перейти в репозиторий \"%s\"", TestData.getREPOSITORY()))).click();
+        $(css("[data-tab-item=issues-tab]").as("Перейти во вкладку \"Issues\"")).click();
+        $(css(".d-md-block").as("Нажать кнопку \"New issue\"")).click();
         $(css("#issue_title").as("Заполнить поле Title")).val(TestData.getTITLE());
         $(css("#issue_body").as("Заполнить поле Description")).val(TestData.getDESCRIPTION());
-        $(named(byText("Submit new issue")).as("Нажать кнопку Submit new issue")).click();
+        $(named(byText("Submit new issue")).as("Нажать кнопку \"Submit new issue\"")).click();
 
         TestData.setIssueId($(css("span.js-issue-title~span").as("Записать issue id")).getText());
-        $(css(".js-issue-assign-self").as("Назначить issue #" + TestData.getIssueId()
-                + " на " + TestData.getOWNER())).click();
-        $(css("#labels-select-menu").as("Перейти в блок label для issue " + TestData.getIssueId())).click();
-        $(css("[role=menuitemcheckbox]").as("Выбрать label " + TestData.getLABEL())).click();
+        $(css(".js-issue-assign-self").as(String.format("Назначить issue #%s на \"%s\"",
+                TestData.getIssueId(), TestData.getOWNER()))).click();
+        $(css("#labels-select-menu").as(String.format("Перейти в блок label для issue #%s",
+                TestData.getIssueId()))).click();
+        $(css("[role=menuitemcheckbox]").as(String.format("Выбрать label \"%s\"", TestData.getLABEL()))).click();
         $(css("#labels-select-menu").as("Закрыть блок label")).click();
         closeWebDriver();
 

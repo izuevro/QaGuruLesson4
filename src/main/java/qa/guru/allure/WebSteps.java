@@ -10,11 +10,11 @@ import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.link;
 import static io.qameta.allure.Allure.parameter;
 
-@Feature("Работа с новой Issue")
+
+@Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
 public class WebSteps {
-
-    @Step("Открыть главную страницу")
+    @Step("Открыть сайт \"{url}\"")
     public void openMainPage(String url) {
         link("Test site", url);
         open(url);
@@ -25,13 +25,13 @@ public class WebSteps {
         $(byText("Sign in")).click();
     }
 
-    @Step("Выполнить авторизацию")
+    @Step("Выполнить авторизацию пользователем \"{login}\"")
     public void performAuthorization(String login, String password) {
         $("#login_field").val(login);
         $("#password").val(password).pressEnter();
     }
 
-    @Step("Найти репозиторий и перейти во вкладку Issues")
+    @Step("Найти репозиторий \"{repository}\" и перейти во вкладку Issues")
     public void findRepositoryAndGoIssue(String repository) {
         parameter("Repository", repository);
 
@@ -39,12 +39,12 @@ public class WebSteps {
         $("[data-tab-item=issues-tab]").click();
     }
 
-    @Step("Нажать кнопку New issue")
+    @Step("Нажать кнопку \"New issue\"")
     public void clickNewIssueButton() {
         $(".d-md-block").click();
     }
 
-    @Step("Заполнить форму и создать issue")
+    @Step("Заполнить форму и создать issue \"{title}\"")
     public void fillOutFormAndCreateAnIssue(String title, String description) {
         parameter("Issue Title", title);
         parameter("Issue Description", description);
@@ -59,16 +59,16 @@ public class WebSteps {
         TestData.setIssueId($("span.js-issue-title~span").getText());
     }
 
-    @Step("Назначить issue на себя")
-    public void assignAnIssueToYourself() {
-        parameter("Issue Owner", TestData.getOWNER());
+    @Step("Назначить issue на \"{owner}\"")
+    public void assignAnIssueToYourself(String owner) {
+        parameter("Issue Owner", owner);
 
         $(".js-issue-assign-self").click();
     }
 
-    @Step("Добавить label для issue")
-    public void addLabelForIssue() {
-        parameter("Issue Label", TestData.getLABEL());
+    @Step("Добавить label \"{label}\" для issue")
+    public void addLabelForIssue(String label) {
+        parameter("Issue Label", label);
 
         $("#labels-select-menu").click();
         $("[role=menuitemcheckbox]").click();

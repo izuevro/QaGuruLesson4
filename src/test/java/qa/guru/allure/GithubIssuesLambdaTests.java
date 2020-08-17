@@ -15,10 +15,10 @@ import static io.qameta.allure.Allure.*;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-@Feature("Работа с новой Issue")
+
+@Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
 public class GithubIssuesLambdaTests {
-
     @Test
     @DisplayName("Создание Issue через WEB и проверка через API")
     @Story("Создание Issue через WEB и проверка через API")
@@ -30,20 +30,20 @@ public class GithubIssuesLambdaTests {
         parameter("Issue Owner", TestData.getOWNER());
         parameter("Issue Label", TestData.getLABEL());
 
-        step("Открыть " + TestData.getURL(), () -> open(TestData.getURL()));
+        step(String.format("Открыть сайт \"%s\"", TestData.getURL()), () -> open(TestData.getURL()));
         step("Перейти на страницу авторизации", () -> $(byText("Sign in")).click());
-        step("Выполнить авторизацию пользователем " + TestData.getOWNER(), () -> {
+        step(String.format("Выполнить авторизацию пользователем \"%s\"", TestData.getOWNER()), () -> {
             $("#login_field").val(PrivateData.getLOGIN());
             $("#password").val(PrivateData.getPASSWORD()).pressEnter();
         });
 
-        step("Перейти в репозиторий " + TestData.getREPOSITORY()
-                + ", и перейти во вкладку Issues", () -> {
+        step(String.format("Перейти в репозиторий \"%s\", и перейти во вкладку \"Issues\"",
+                TestData.getREPOSITORY()), () -> {
             $(by("title", TestData.getREPOSITORY())).click();
             $("[data-tab-item=issues-tab]").click();
         });
-        step("Нажать кнопку New issue", () -> $(".d-md-block").click());
-        step("Заполнить форму и создать issue", () -> {
+        step("Нажать кнопку \"New issue\"", () -> $(".d-md-block").click());
+        step("Заполнить форму и нажать кнопку \"Submit new issue\"", () -> {
             $("#issue_title").val(TestData.getTITLE());
             $("#issue_body").val(TestData.getDESCRIPTION());
             $(byText("Submit new issue")).click();
@@ -51,23 +51,23 @@ public class GithubIssuesLambdaTests {
 
         step("Записать issue id",
                 () -> TestData.setIssueId($("span.js-issue-title~span").getText()));
-        step("Назначить issue #" + TestData.getIssueId() + " на " + TestData.getOWNER(),
+        step(String.format("Назначить issue #%s на \"%s\"", TestData.getIssueId(), TestData.getOWNER()),
                 () -> $(".js-issue-assign-self").click());
-        step("Добавить label для issue #" + TestData.getIssueId(), () -> {
+        step(String.format("Добавить label \"%s\" для issue #%s", TestData.getLABEL(), TestData.getIssueId()), () -> {
             $("#labels-select-menu").click();
             $("[role=menuitemcheckbox]").click();
             $("#labels-select-menu").click();
         });
         step("Закрыть браузер", Selenide::closeWebDriver);
 
-        step("Проверить issue #" + TestData.getIssueId() + " через API", () -> {
+        step(String.format("Проверить issue #%s через API", TestData.getIssueId()), () -> {
             given()
                     .filter(new AllureRestAssured())
                     .baseUri("https://api.github.com")
                     .header("Authorization", PrivateData.getTOKEN())
                     .when()
-                    .get("/repos/" + TestData.getOWNER() + "/" + TestData.getREPOSITORY()
-                            + "/issues/" + TestData.getIssueId())
+                    .get(String.format("/repos/%s/%s/issues/%s",
+                            TestData.getOWNER(), TestData.getREPOSITORY(), TestData.getIssueId()))
                     .then()
                     .statusCode(200)
                     .body("number", equalTo(Integer.parseInt(TestData.getIssueId())))

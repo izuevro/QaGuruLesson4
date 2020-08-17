@@ -18,10 +18,10 @@ import static io.qameta.allure.Allure.parameter;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
-@Feature("Работа с новой Issue")
+
+@Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
 public class GithubIssuesListenerTests {
-
     @BeforeEach
     public void initSelenideListener() {
         SelenideLogger.addListener("allure", new AllureSelenide()
@@ -64,8 +64,8 @@ public class GithubIssuesListenerTests {
                 .baseUri("https://api.github.com")
                 .header("Authorization", PrivateData.getTOKEN())
                 .when()
-                .get("/repos/" + TestData.getOWNER() + "/" + TestData.getREPOSITORY()
-                        + "/issues/" + TestData.getIssueId())
+                .get(String.format("/repos/%s/%s/issues/%s",
+                        TestData.getOWNER(), TestData.getREPOSITORY(), TestData.getIssueId()))
                 .then()
                 .statusCode(200)
                 .body("number", equalTo(Integer.parseInt(TestData.getIssueId())))
