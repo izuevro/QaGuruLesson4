@@ -17,6 +17,8 @@ import static io.qameta.allure.Allure.link;
 import static io.qameta.allure.Allure.parameter;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static qa.guru.allure.PrivateData.*;
+import static qa.guru.allure.TestData.*;
 
 
 @Feature("Работа с новой Issue в Github")
@@ -33,26 +35,26 @@ public class GithubIssuesListenerTests {
     @DisplayName("Создание Issue через WEB и проверка через API")
     @Story("Создание Issue через WEB и проверка через API")
     public void createIssueByWebAndCheckByApiTest() {
-        link("Test site", TestData.getURL());
-        parameter("Repository", TestData.getREPOSITORY());
-        parameter("Issue Title", TestData.getTITLE());
-        parameter("Issue Description", TestData.getDESCRIPTION());
-        parameter("Issue Owner", TestData.getOWNER());
-        parameter("Issue Label", TestData.getLABEL());
+        link("Test site", getURL());
+        parameter("Repository", getREPOSITORY());
+        parameter("Issue Title", getTITLE());
+        parameter("Issue Description", getDESCRIPTION());
+        parameter("Issue Owner", getOWNER());
+        parameter("Issue Label", getLABEL());
 
-        open(TestData.getURL());
+        open(getURL());
         $(byText("Sign in")).click();
-        $("#login_field").val(PrivateData.getLOGIN());
-        $("#password").val(PrivateData.getPASSWORD()).pressEnter();
+        $("#login_field").val(getLOGIN());
+        $("#password").val(getPASSWORD()).pressEnter();
 
-        $(by("title", TestData.getREPOSITORY())).click();
+        $(by("title", getREPOSITORY())).click();
         $("[data-tab-item=issues-tab]").click();
         $(".d-md-block").click();
-        $("#issue_title").val(TestData.getTITLE());
-        $("#issue_body").val(TestData.getDESCRIPTION());
+        $("#issue_title").val(getTITLE());
+        $("#issue_body").val(getDESCRIPTION());
         $(byText("Submit new issue")).click();
 
-        TestData.setIssueId($("span.js-issue-title~span").getText());
+        setIssueId($("span.js-issue-title~span").getText());
         $(".js-issue-assign-self").click();
         $("#labels-select-menu").click();
         $("[role=menuitemcheckbox]").click();
@@ -62,16 +64,16 @@ public class GithubIssuesListenerTests {
         given()
                 .filter(new AllureRestAssured())
                 .baseUri("https://api.github.com")
-                .header("Authorization", PrivateData.getTOKEN())
-                .when()
+                .header("Authorization", getTOKEN())
+        .when()
                 .get(String.format("/repos/%s/%s/issues/%s",
-                        TestData.getOWNER(), TestData.getREPOSITORY(), TestData.getIssueId()))
-                .then()
+                        getOWNER(), getREPOSITORY(), getIssueId()))
+        .then()
                 .statusCode(200)
-                .body("number", equalTo(Integer.parseInt(TestData.getIssueId())))
-                .body("title", equalTo(TestData.getTITLE()))
-                .body("body", equalTo(TestData.getDESCRIPTION()))
-                .body("assignee.login", equalTo(TestData.getOWNER()))
-                .body("labels[0].name", equalTo(TestData.getLABEL()));
+                .body("number", equalTo(Integer.parseInt(getIssueId())))
+                .body("title", equalTo(getTITLE()))
+                .body("body", equalTo(getDESCRIPTION()))
+                .body("assignee.login", equalTo(getOWNER()))
+                .body("labels[0].name", equalTo(getLABEL()));
     }
 }

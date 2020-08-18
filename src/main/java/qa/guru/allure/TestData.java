@@ -1,12 +1,12 @@
 package qa.guru.allure;
 
 public class TestData {
-    private static final String URL = "https://github.com/";
-    private static final String TITLE = "Test Issue";
-    private static final String DESCRIPTION = "Test Issue description";
-    private static final String OWNER = "";
-    private static final String REPOSITORY = "QaGuruLesson4";
-    private static final String LABEL = "bug";
+    private static final String URL = "https://github.com/",
+                                TITLE = "Test Issue",
+                                DESCRIPTION = "Test Issue description",
+                                OWNER = "",
+                                REPOSITORY = "QaGuruLesson4",
+                                LABEL = "bug";
     private static String issueId;
 
     public static String getURL() {

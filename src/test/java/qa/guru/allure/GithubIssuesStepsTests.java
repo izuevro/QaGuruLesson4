@@ -6,6 +6,9 @@ import io.qameta.allure.Story;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static qa.guru.allure.PrivateData.*;
+import static qa.guru.allure.TestData.*;
+
 
 @Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
@@ -17,20 +20,19 @@ public class GithubIssuesStepsTests {
     @DisplayName("Создание Issue через WEB и проверка через API")
     @Story("Создание Issue через WEB и проверка через API")
     public void createIssueByWebAndCheckByApiTest() {
-        steps.openMainPage(TestData.getURL());
+        steps.openMainPage(getURL());
         steps.goToAuthPage();
-        steps.performAuthorization(PrivateData.getLOGIN(), PrivateData.getPASSWORD());
+        steps.performAuthorization(getLOGIN(), getPASSWORD());
 
-        steps.findRepositoryAndGoIssue(TestData.getREPOSITORY());
+        steps.findRepositoryAndGoIssue(getREPOSITORY());
         steps.clickNewIssueButton();
-        steps.fillOutFormAndCreateAnIssue(TestData.getTITLE(), TestData.getDESCRIPTION());
+        steps.fillOutFormAndCreateAnIssue(getTITLE(), getDESCRIPTION());
 
         steps.writeAnIssueId();
-        steps.assignAnIssueToYourself(TestData.getOWNER());
-        steps.addLabelForIssue(TestData.getLABEL());
+        steps.assignAnIssueToYourself(getOWNER());
+        steps.addLabelForIssue(getLABEL());
         steps.closeBrowser();
 
-        apiSteps.checkCreatedIssue(TestData.getOWNER(), TestData.getREPOSITORY(),
-                TestData.getIssueId(), PrivateData.getTOKEN());
+        apiSteps.checkCreatedIssue(getOWNER(), getREPOSITORY(), getIssueId(), getTOKEN());
     }
 }

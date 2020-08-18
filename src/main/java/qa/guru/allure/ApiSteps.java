@@ -7,6 +7,7 @@ import io.qameta.allure.restassured.AllureRestAssured;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static qa.guru.allure.TestData.*;
 
 
 @Feature("Работа с новой Issue в Github")
@@ -19,14 +20,14 @@ public class ApiSteps {
                 .filter(new AllureRestAssured())
                 .baseUri("https://api.github.com")
                 .header("Authorization", token)
-                .when()
+        .when()
                 .get(String.format("/repos/%s/%s/issues/%s", owner, repository, issueId))
-                .then()
+        .then()
                 .statusCode(200)
                 .body("number", equalTo(Integer.parseInt(issueId)))
-                .body("title", equalTo(TestData.getTITLE()))
-                .body("body", equalTo(TestData.getDESCRIPTION()))
-                .body("assignee.login", equalTo(TestData.getOWNER()))
-                .body("labels[0].name", equalTo(TestData.getLABEL()));
+                .body("title", equalTo(getTITLE()))
+                .body("body", equalTo(getDESCRIPTION()))
+                .body("assignee.login", equalTo(getOWNER()))
+                .body("labels[0].name", equalTo(getLABEL()));
     }
 }
