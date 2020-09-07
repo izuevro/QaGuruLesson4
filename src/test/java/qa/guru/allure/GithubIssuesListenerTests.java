@@ -1,15 +1,14 @@
 package qa.guru.allure;
 
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.qameta.allure.selenide.AllureSelenide;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static com.codeborne.selenide.Selectors.by;
 import static com.codeborne.selenide.Selectors.byText;
@@ -28,9 +27,15 @@ public class GithubIssuesListenerTests {
 
     @BeforeEach
     public void initSelenideListener() {
+        Configuration.headless = true;
         SelenideLogger.addListener("allure", new AllureSelenide()
                 .savePageSource(true)
                 .screenshots(true));
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Selenide.closeWebDriver();
     }
 
     @Test
@@ -68,10 +73,10 @@ public class GithubIssuesListenerTests {
                 .filter(new AllureRestAssured())
                 .baseUri("https://api.github.com")
                 .header("Authorization", getTOKEN())
-        .when()
+                .when()
                 .get(String.format("/repos/%s/%s/issues/%s",
                         getOWNER(), getREPOSITORY(), getIssueId()))
-        .then()
+                .then()
                 .statusCode(200)
                 .body("number", equalTo(Integer.parseInt(getIssueId())))
                 .body("title", equalTo(getTITLE()))

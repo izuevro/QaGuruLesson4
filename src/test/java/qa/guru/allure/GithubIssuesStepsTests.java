@@ -1,11 +1,11 @@
 package qa.guru.allure;
 
+import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.Selenide;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static qa.guru.allure.PrivateData.*;
 import static qa.guru.allure.TestData.*;
@@ -17,6 +17,16 @@ public class GithubIssuesStepsTests {
 
     private WebSteps steps = new WebSteps();
     private ApiSteps apiSteps = new ApiSteps();
+
+    @BeforeEach
+    public void beforeEach() {
+        Configuration.headless = true;
+    }
+
+    @AfterEach
+    public void afterEach() {
+        Selenide.closeWebDriver();
+    }
 
     @Test
     @Tag("slow")
