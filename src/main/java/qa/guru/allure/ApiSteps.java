@@ -1,7 +1,5 @@
 package qa.guru.allure;
 
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 
@@ -10,8 +8,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static qa.guru.allure.TestData.*;
 
 
-@Feature("Работа с новой Issue в Github")
-@Owner("Роман Зуев")
 public class ApiSteps {
     @Step("Проверка issue через API")
     public void checkCreatedIssue(String owner, String repository,

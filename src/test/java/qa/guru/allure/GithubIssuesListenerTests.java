@@ -8,6 +8,7 @@ import io.qameta.allure.restassured.AllureRestAssured;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selectors.by;
@@ -24,6 +25,7 @@ import static qa.guru.allure.TestData.*;
 @Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
 public class GithubIssuesListenerTests {
+
     @BeforeEach
     public void initSelenideListener() {
         SelenideLogger.addListener("allure", new AllureSelenide()
@@ -32,6 +34,7 @@ public class GithubIssuesListenerTests {
     }
 
     @Test
+    @Tag("slow")
     @DisplayName("Создание Issue через WEB и проверка через API")
     @Story("Создание Issue через WEB и проверка через API")
     public void createIssueByWebAndCheckByApiTest() {

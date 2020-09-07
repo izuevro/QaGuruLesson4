@@ -1,7 +1,5 @@
 package qa.guru.allure;
 
-import io.qameta.allure.Feature;
-import io.qameta.allure.Owner;
 import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selectors.by;
@@ -11,9 +9,8 @@ import static io.qameta.allure.Allure.link;
 import static io.qameta.allure.Allure.parameter;
 
 
-@Feature("Работа с новой Issue в Github")
-@Owner("Роман Зуев")
 public class WebSteps {
+
     @Step("Открыть сайт \"{url}\"")
     public void openMainPage(String url) {
         link("Test site", url);
