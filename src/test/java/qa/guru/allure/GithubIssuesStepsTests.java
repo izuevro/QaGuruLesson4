@@ -7,6 +7,8 @@ import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
 import org.junit.jupiter.api.*;
 
+import static org.openqa.selenium.logging.LogType.BROWSER;
+import static qa.guru.allure.AttachmentsHelper.*;
 import static qa.guru.allure.PrivateData.*;
 import static qa.guru.allure.TestData.*;
 
@@ -18,6 +20,10 @@ public class GithubIssuesStepsTests {
     private WebSteps steps = new WebSteps();
     private ApiSteps apiSteps = new ApiSteps();
 
+    public static String getBrowserConsoleLogs() {
+        return String.join("\n", Selenide.getWebDriverLogs(BROWSER));
+    }
+
     @BeforeEach
     public void beforeEach() {
         Configuration.headless = true;
@@ -25,6 +31,9 @@ public class GithubIssuesStepsTests {
 
     @AfterEach
     public void afterEach() {
+        attachScreenshot("Last screenshot");
+        attachPageSource();
+        attachAsText("Console logs", getBrowserConsoleLogs());
         Selenide.closeWebDriver();
     }
 

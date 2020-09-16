@@ -14,6 +14,8 @@ import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
 import static io.qameta.allure.Allure.link;
 import static io.qameta.allure.Allure.parameter;
+import static org.openqa.selenium.logging.LogType.BROWSER;
+import static qa.guru.allure.AttachmentsHelper.*;
 import static qa.guru.allure.NamedBy.css;
 import static qa.guru.allure.NamedBy.named;
 import static qa.guru.allure.PrivateData.*;
@@ -23,6 +25,10 @@ import static qa.guru.allure.TestData.*;
 @Feature("Работа с новой Issue в Github")
 @Owner("Роман Зуев")
 public class GithubIssuesNamedByTests {
+
+    public static String getBrowserConsoleLogs() {
+        return String.join("\n", Selenide.getWebDriverLogs(BROWSER));
+    }
 
     @BeforeEach
     public void initSelenideListener() {
@@ -34,6 +40,9 @@ public class GithubIssuesNamedByTests {
 
     @AfterEach
     public void afterEach() {
+        attachScreenshot("Last screenshot");
+        attachPageSource();
+        attachAsText("Console logs", getBrowserConsoleLogs());
         Selenide.closeWebDriver();
     }
 
